@@ -33,13 +33,6 @@ class PostgreUserRepository(UserRepository):
 
         return user
 
-        #     async with Session() as session:
-        #         query = select(UserSchema).where(UserSchema.email == email)
-        #         user = await session.execute(query)
-        #     raise
-        # finally:
-        #     return user.scalar()
-
     async def search_by_email(self, email: str) -> Optional[User]:
         async with Session() as session:
             query = select(UserSchema).where(UserSchema.email == email)

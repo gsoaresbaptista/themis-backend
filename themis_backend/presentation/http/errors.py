@@ -11,6 +11,19 @@ class HTTPError(Exception):
         return {'status_code': self.status_code, 'message': self.message}
 
 
+class HTTPUnprocessableEntity(HTTPError):
+    def __init__(self, errors: dict) -> None:
+        super().__init__(
+            422, 'Correct request structure, hindered by semantic errors.'
+        )
+        self.errors = errors
+
+    def to_dict(self) -> dict[str, Any]:
+        dict_data = super().to_dict()
+        dict_data.update({'errors': self.errors})
+        return dict_data
+
+
 class UserAlreadyExists(HTTPError):
     def __init__(self, email: str) -> None:
         super().__init__(409, f'The email address {email} is already in use.')

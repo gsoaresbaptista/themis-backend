@@ -1,6 +1,7 @@
-from .errors import HTTPError, UserAlreadyExists
+from .errors import HTTPError, HTTPUnprocessableEntity, UserAlreadyExists
 
 __all__ = [
     'HTTPError',
+    'HTTPUnprocessableEntity',
     'UserAlreadyExists',
 ]

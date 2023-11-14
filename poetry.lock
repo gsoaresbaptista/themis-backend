@@ -149,6 +149,17 @@ black = "22.1.0"
 flake8 = ">=3.8,<5.0.0"
 
 [[package]]
+name = "cerberus"
+version = "1.3.5"
+description = "Lightweight, extensible schema and data validation tool for Pythondictionaries."
+optional = false
+python-versions = "*"
+files = [
+    {file = "Cerberus-1.3.5-py3-none-any.whl", hash = "sha256:7649a5815024d18eb7c6aa5e7a95355c649a53aacfc9b050e9d0bf6bfa2af372"},
+    {file = "Cerberus-1.3.5.tar.gz", hash = "sha256:81011e10266ef71b6ec6d50e60171258a5b134d69f8fb387d16e4936d0d47642"},
+]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -639,4 +650,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.*,<4.0"
-content-hash = "24f21cafb92b70f619bbd6cd99f981864de13cd2fdeb24fec822c9fa5d503004"
+content-hash = "b3cdac30010cdb1a52f572b859b8acdf9c43e119735a9001cdc18b540a320c72"

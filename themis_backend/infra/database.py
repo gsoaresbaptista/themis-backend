@@ -1,12 +1,6 @@
-import asyncio
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
-from dotenv import dotenv_values
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_sessionmaker,
-    create_async_engine,
-)
-
+from themis_backend.infra.config import DatabaseSettings
 from themis_backend.infra.schemas import BaseSchema, UserSchema  # noqa: F401
 
 
@@ -15,15 +9,15 @@ async def create_tables() -> None:
         await conn.run_sync(BaseSchema.metadata.create_all)
 
 
-env_file = dotenv_values('.env')
+db_settings = DatabaseSettings()
 
 engine = create_async_engine(
     'postgresql+asyncpg://{}:{}@{}:{}/{}'.format(
-        env_file.get('DATABASE_USER'),
-        env_file.get('DATABASE_PASSWORD'),
-        env_file.get('DATABASE_HOST'),
-        env_file.get('DATABASE_PORT'),
-        env_file.get('DATABASE_NAME'),
+        db_settings.DATABASE_USER,
+        db_settings.DATABASE_PASSWORD,
+        db_settings.DATABASE_HOST,
+        db_settings.DATABASE_PORT,
+        db_settings.DATABASE_NAME,
     ),
 )
 

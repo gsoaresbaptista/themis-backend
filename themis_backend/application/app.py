@@ -1,6 +1,6 @@
 from starlette.applications import Starlette
 
-from themis_backend.application.config import (
+from themis_backend.application.setup import (
     setup_exceptions,
     setup_routes,
     setup_startup,
