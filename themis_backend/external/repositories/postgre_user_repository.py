@@ -10,6 +10,15 @@ from themis_backend.infra.schemas import UserSchema
 from themis_backend.presentation.http import UserAlreadyExists
 
 
+def user_row_to_entity(row: UserSchema) -> User:
+    return User(
+        id=row.id,
+        name=row.name,
+        email=row.email,
+        hashed_password=row.hashed_password,
+    )
+
+
 class PostgreUserRepository(UserRepository):
     async def create(
         self, name: str, email: str, hashed_password: bytes
@@ -31,11 +40,11 @@ class PostgreUserRepository(UserRepository):
                 raise UserAlreadyExists(email=email) from exception
             raise
 
-        return user
+        return user_row_to_entity(user)
 
     async def search_by_email(self, email: str) -> Optional[User]:
         async with Session() as session:
             query = select(UserSchema).where(UserSchema.email == email)
             user = await session.execute(query)
 
-        return user.scalar()
+        return user_row_to_entity(user.scalar())

@@ -1,27 +1,14 @@
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-from themis_backend.domain.use_cases import CreateUser
-from themis_backend.external.repositories import PostgreUserRepository
-from themis_backend.external.services import BcryptHashService
-from themis_backend.presentation.dtos import CreateUserDTO
+from themis_backend.application.adapters import request_adapter
+from themis_backend.application.factories import create_user_composer
 
 
 async def create_user_route(request: Request) -> Response:
-    repository = PostgreUserRepository()
-    hash_service = BcryptHashService()
-    use_case = CreateUser(repository, hash_service)
-
-    body = await request.json()
-    dto = CreateUserDTO(
-        name=body['name'], email=body['email'], password=body['password']
-    )
-
-    user = await use_case.execute(dto)
+    response = await request_adapter(request, create_user_composer())
 
     return JSONResponse(
-        status_code=201,
-        content={
-            'user': {'id': user.id.hex, 'email': user.email, 'name': user.name}
-        },
+        status_code=response.status_code,
+        content=response.body,
     )
