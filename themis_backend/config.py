@@ -12,11 +12,9 @@ class DatabaseSettings:
 
 
 class TokenSettings:
-    ALGORITHM: str = env_file.get('ALGORITHM')
-    SECRET_KEY: str = env_file.get('SECRET_KEY')
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(
-        env_file.get('ACCESS_TOKEN_EXPIRE_MINUTES')
-    )
+    ALGORITHM: str = env_file.get('ACCESS_TOKEN_ALGORITHM')
+    SECRET_KEY: str = env_file.get('ACCESS_TOKEN_SECRET_KEY')
+    EXPIRE_MINUTES: int = int(env_file.get('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
 
 class ModelSettings:

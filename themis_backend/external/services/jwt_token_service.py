@@ -10,7 +10,7 @@ from themis_backend.presentation.dtos import TokenDTO, UserViewDTO
 
 class JTWAccessTokenService(AccessTokenService):
     def __init__(self) -> None:
-        self.__expire_minutes = TokenSettings.ACCESS_TOKEN_EXPIRE_MINUTES
+        self.__expire_minutes = TokenSettings.EXPIRE_MINUTES
         self.__algorithm = TokenSettings.ALGORITHM
         self.__secret_key = TokenSettings.SECRET_KEY
 
