@@ -1,8 +1,7 @@
-from typing import Generator
-
 from ctransformers import AutoModelForCausalLM
 
 from themis_backend.config import ModelSettings
+from themis_backend.domain.services import BufferedGenerator
 
 
 class GGUFModelService:
@@ -15,8 +14,8 @@ class GGUFModelService:
         )
         self.__token_to_str = self.__model.ctransformers_llm_detokenize
 
-    def generate(self, question: str) -> Generator[str, None, None]:
-        return self.__model(question, stream=True)
+    def generate(self, question: str) -> BufferedGenerator:
+        return BufferedGenerator(self.__model(question, stream=True))
 
     def tokenize(self, question: str) -> list[str]:
         tokens = []
