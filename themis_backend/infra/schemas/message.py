@@ -17,7 +17,9 @@ class MessageSchema(BaseSchema):
     user_id: MappedColumn[uuid.UUID] = mapped_column(ForeignKey('users.id'))
     question: MappedColumn[str] = mapped_column(String)
     answer: MappedColumn[str] = mapped_column(String)
-    create_at: MappedColumn[datetime] = mapped_column(DATE, default=datetime.now())
+    create_at: MappedColumn[datetime] = mapped_column(
+        DATE, default=datetime.now()
+    )
 
     def __repr__(self):
         return (

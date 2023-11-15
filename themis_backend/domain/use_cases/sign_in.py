@@ -12,12 +12,12 @@ class SignIn:
     def __init__(
         self,
         repository: UserRepository,
-        hash: HashService,
-        token: AccessTokenService,
+        hash_service: HashService,
+        token_service: AccessTokenService,
     ) -> None:
         self.__repository = repository
-        self.__hash = hash
-        self.__token = token
+        self.__hash = hash_service
+        self.__token = token_service
 
     async def execute(self, sign_in_dto: SignInDTO) -> str:
         validator = SignInValidator(sign_in_dto)
