@@ -68,3 +68,8 @@ class UserAlreadyExists(HTTPConflict):
 class IncorrectPassword(HTTPUnauthorized):
     def __init__(self, message: str = 'Incorrect password') -> None:
         super().__init__(message)
+
+
+class EmptyQuestionNotAllowed(HTTPBadRequest):
+    def __init__(self, message: str = 'Empty question is not allowed') -> None:
+        super().__init__(message)

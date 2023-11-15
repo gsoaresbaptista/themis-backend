@@ -1,4 +1,5 @@
 from .errors import (
+    EmptyQuestionNotAllowed,
     HTTPBadRequest,
     HTTPConflict,
     HTTPError,
@@ -24,6 +25,7 @@ __all__ = [
     'UserAlreadyExists',
     'UserAlreadyExists',
     'IncorrectPassword',
+    'EmptyQuestionNotAllowed',
     'HttpRequest',
     'HttpResponse',
 ]
