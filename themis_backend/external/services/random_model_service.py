@@ -1,17 +1,20 @@
+import asyncio
 import random
 import string
 import time
 from typing import Generator
 
-from themis_backend.domain.services import BufferedGenerator
+from themis_backend.domain.services import AsyncGenerator, BufferedGenerator
 
 
 class RandomModelService:
     def __init__(self) -> None:
         self.__model = random_generator
 
-    def generate(self, question: str) -> BufferedGenerator:
-        return BufferedGenerator(self.__model())
+    def generate(
+        self, question: str, lock: asyncio.Lock = None
+    ) -> BufferedGenerator:
+        return BufferedGenerator(AsyncGenerator(self.__model(), lock))
 
     def tokenize(self, question: str) -> list[str]:
         return question.split(' ')

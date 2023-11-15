@@ -1,7 +1,9 @@
+import asyncio
+
 from ctransformers import AutoModelForCausalLM
 
 from themis_backend.config import ModelSettings
-from themis_backend.domain.services import BufferedGenerator
+from themis_backend.domain.services import AsyncGenerator, BufferedGenerator
 
 
 class GGUFModelService:
@@ -14,8 +16,12 @@ class GGUFModelService:
         )
         self.__token_to_str = self.__model.ctransformers_llm_detokenize
 
-    def generate(self, question: str) -> BufferedGenerator:
-        return BufferedGenerator(self.__model(question, stream=True))
+    def generate(
+        self, question: str, lock: asyncio.Lock = None
+    ) -> BufferedGenerator:
+        return BufferedGenerator(
+            AsyncGenerator(self.__model(question, stream=True), lock)
+        )
 
     def tokenize(self, question: str) -> list[str]:
         tokens = []

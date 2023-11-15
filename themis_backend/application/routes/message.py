@@ -29,7 +29,11 @@ async def question_route(request: Request) -> Response:
     )
 
     question = response.body['data']['question']
-    generator = request.app.model.generate(question)
+
+    lock = request.app.model_lock
+    generator = request.app.model.generate(question, lock)
+    await lock.acquire()
+
     task = BackgroundTask(
         store_message,
         generator=generator,
