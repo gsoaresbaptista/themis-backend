@@ -1,8 +1,9 @@
 import uuid
 from datetime import datetime
+
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import MappedColumn, mapped_column
-from sqlalchemy.types import String, Uuid, DATE
+from sqlalchemy.types import DATE, String, Uuid
 
 from themis_backend.infra.schemas.base import BaseSchema
 
@@ -17,7 +18,6 @@ class MessageSchema(BaseSchema):
     question: MappedColumn[str] = mapped_column(String)
     answer: MappedColumn[str] = mapped_column(String)
     create_at: MappedColumn[datetime] = mapped_column(DATE)
-
 
     def __repr__(self):
         return (
