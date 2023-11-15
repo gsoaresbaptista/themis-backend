@@ -10,13 +10,15 @@ from themis_backend.infra.schemas import UserSchema
 from themis_backend.presentation.http import UserAlreadyExists
 
 
-def user_row_to_entity(row: UserSchema) -> User:
-    return User(
-        id=row.id,
-        name=row.name,
-        email=row.email,
-        hashed_password=row.hashed_password,
-    )
+def user_row_to_entity(row: UserSchema) -> Optional[User]:
+    if row:
+        return User(
+            id=row.id,
+            name=row.name,
+            email=row.email,
+            hashed_password=row.hashed_password,
+        )
+    return None
 
 
 class PostgreUserRepository(UserRepository):

@@ -1,7 +1,10 @@
 from themis_backend.domain.repositories import UserRepository
 from themis_backend.domain.services import AccessTokenService, HashService
 from themis_backend.presentation.dtos import SignInDTO, UserViewDTO
-from themis_backend.presentation.http.errors import IncorrectPassword
+from themis_backend.presentation.http.errors import (
+    IncorrectPassword,
+    UserNotFound,
+)
 from themis_backend.presentation.validators import SignInValidator
 
 
@@ -21,6 +24,9 @@ class SignIn:
         validator.validate()
 
         user = await self.__repository.search_by_email(email=sign_in_dto.email)
+
+        if not user:
+            raise UserNotFound()
 
         if self.__hash.compare(sign_in_dto.password, user.hashed_password):
             return self.__token.create(UserViewDTO.from_user_dto(user))

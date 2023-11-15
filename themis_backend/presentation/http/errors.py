@@ -29,9 +29,19 @@ class HTTPUnauthorized(HTTPError):
         super().__init__(401, message)
 
 
+class HTTPNotFound(HTTPError):
+    def __init__(self, message: str = 'Resource not found') -> None:
+        super().__init__(404, message)
+
+
 class HTTPConflict(HTTPError):
     def __init__(self, message: str = 'Conflict in the resource') -> None:
         super().__init__(409, message)
+
+
+class UserNotFound(HTTPNotFound):
+    def __init__(self, message: str = 'User not found') -> None:
+        super().__init__(message)
 
 
 class UserAlreadyExists(HTTPConflict):
