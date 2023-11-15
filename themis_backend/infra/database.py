@@ -1,7 +1,11 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from themis_backend.infra.config import DatabaseSettings
-from themis_backend.infra.schemas import BaseSchema, UserSchema  # noqa: F401
+from themis_backend.infra.schemas import (  # noqa: F401
+    BaseSchema,
+    MessageSchema,
+    UserSchema,
+)
 
 
 async def create_tables() -> None:
