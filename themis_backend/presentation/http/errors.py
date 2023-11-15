@@ -29,6 +29,16 @@ class HTTPUnauthorized(HTTPError):
         super().__init__(401, message)
 
 
+class HTTPBadRequest(HTTPError):
+    def __init__(self, message: str = 'Empty or Missing Request Body') -> None:
+        super().__init__(400, message)
+
+
+class HTTPForbidden(HTTPError):
+    def __init__(self, message: str = "You don't have permission") -> None:
+        super().__init__(403, message)
+
+
 class HTTPNotFound(HTTPError):
     def __init__(self, message: str = 'Resource not found') -> None:
         super().__init__(404, message)
