@@ -8,7 +8,9 @@ from themis_backend.presentation.http.errors import HTTPBadRequest
 
 
 async def request_adapter(
-    request: Request, controller: Controller
+    request: Request,
+    controller: Controller,
+    middlewares: list[Controller] = list(),
 ) -> HttpResponse:
     body = {}
 
@@ -18,7 +20,11 @@ async def request_adapter(
         except JSONDecodeError:
             raise HTTPBadRequest()
 
-    http_request = HttpRequest(body=body)
+    http_request = HttpRequest(body=body, header=request.headers)
+
+    for middleware in middlewares:
+        http_request = await middleware.handle(http_request)
+
     http_response = await controller.handle(http_request)
 
     return http_response
