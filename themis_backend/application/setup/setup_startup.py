@@ -1,6 +1,6 @@
 from starlette.applications import Starlette
 
-from themis_backend.external.services import (
+from themis_backend.external.services import (  # noqa: F401
     GGUFModelService,
     RandomModelService,
 )
