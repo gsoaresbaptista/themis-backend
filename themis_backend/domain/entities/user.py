@@ -8,7 +8,7 @@ class User(NamedTuple):
     email: str
     hashed_password: str
 
-    def to_dict(self, no_password: bool = True) -> dict[str, Any]:
+    def _asdict(self, no_password: bool = True) -> dict[str, Any]:
         dict_user = {
             'id': self.id.hex,
             'name': self.name,

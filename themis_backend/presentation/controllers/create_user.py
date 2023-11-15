@@ -18,5 +18,5 @@ class CreateUserController(Controller):
         user = await self.__use_case.execute(dto)
 
         return HttpResponse(
-            status_code=201, body={'data': {'user': user.to_dict()}}
+            status_code=201, body={'data': {'user': user._asdict()}}
         )
