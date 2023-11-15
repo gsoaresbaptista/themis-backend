@@ -7,11 +7,12 @@ from starlette.responses import Response, StreamingResponse
 from themis_backend.application.adapters import request_adapter
 from themis_backend.application.factories import authenticate_composer
 from themis_backend.domain.services import BufferedGenerator
+from themis_backend.domain.use_cases import CreateMessage
 from themis_backend.external.repositories.postgre_message_repository import (
     PostgreMessageRepository,
 )
 from themis_backend.presentation.controllers import QuestionController
-from themis_backend.presentation.dtos import UserViewDTO
+from themis_backend.presentation.dtos import CreateMessageDTO, UserViewDTO
 
 
 async def store_message(
@@ -23,12 +24,13 @@ async def store_message(
     if lock:
         lock.release()
 
-    repository = PostgreMessageRepository()
-
-    await repository.create(
-        user_id=user_view.user_id,
-        question=question,
-        answer=generator.get_text(),
+    use_case = CreateMessage(repository=PostgreMessageRepository())
+    use_case.execute(
+        CreateMessageDTO(
+            user_id=user_view.id,
+            question=question,
+            answer=generator.get_text(),
+        )
     )
 
 
@@ -38,9 +40,9 @@ async def question_route(request: Request) -> Response:
     )
 
     question = response.body['data']['question']
+    generator = request.app.model.generate(question)
 
     lock = request.app.model_lock
-    generator = request.app.model.generate(question)
     if lock:
         await lock.acquire()
 

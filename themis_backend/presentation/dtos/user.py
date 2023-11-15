@@ -24,3 +24,8 @@ class UserDTO(NamedTuple):
     name: str
     email: str
     hashed_password: str
+
+
+class SignInDTO(NamedTuple):
+    email: str
+    password: str
