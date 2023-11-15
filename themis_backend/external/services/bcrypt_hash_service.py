@@ -10,5 +10,5 @@ class BcryptHashService(HashService):
     def hash(self, password: str) -> str:
         return self.__ctx.hash(password)
 
-    def compare(self, password: str, hashed_password: bytes) -> bool:
+    def compare(self, password: str, hashed_password: str) -> bool:
         return self.__ctx.verify(password, hashed_password)

@@ -24,12 +24,27 @@ class HTTPUnprocessableEntity(HTTPError):
         return dict_data
 
 
-class UserAlreadyExists(HTTPError):
+class HTTPUnauthorized(HTTPError):
+    def __init__(self, message: str = 'Unauthorized credentials') -> None:
+        super().__init__(401, message)
+
+
+class HTTPConflict(HTTPError):
+    def __init__(self, message: str = 'Conflict in the resource') -> None:
+        super().__init__(409, message)
+
+
+class UserAlreadyExists(HTTPConflict):
     def __init__(self, email: str) -> None:
-        super().__init__(409, f'The email address {email} is already in use.')
+        super().__init__(f'The email address {email} is already in use.')
         self.email = email
 
     def to_dict(self) -> dict[str, Any]:
         dict_data = super().to_dict()
         dict_data.update({'conflict_key': 'email', 'email': self.email})
         return dict_data
+
+
+class IncorrectPassword(HTTPUnauthorized):
+    def __init__(self, message: str = 'Incorrect password') -> None:
+        super().__init__(message)

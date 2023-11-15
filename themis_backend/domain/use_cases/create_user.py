@@ -8,9 +8,7 @@ from themis_backend.presentation.validators import CreateUserValidator
 
 
 class CreateUser:
-    def __init__(
-        self, repository: UserRepository, hash: HashService
-    ) -> Optional[User]:
+    def __init__(self, repository: UserRepository, hash: HashService) -> None:
         self.__repository = repository
         self.__hash = hash
 

@@ -7,5 +7,5 @@ class HashService(ABC):
         ...
 
     @abstractmethod
-    def compare(self, password: str, hashed_password: bytes) -> bool:
+    def compare(self, password: str, hashed_password: str) -> bool:
         ...
