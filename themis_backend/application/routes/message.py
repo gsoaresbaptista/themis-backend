@@ -1,3 +1,5 @@
+import asyncio
+
 from starlette.background import BackgroundTask
 from starlette.requests import Request
 from starlette.responses import Response, StreamingResponse
@@ -13,9 +15,16 @@ from themis_backend.presentation.dtos import UserViewDTO
 
 
 async def store_message(
-    user_view: UserViewDTO, question: str, generator: BufferedGenerator
+    user_view: UserViewDTO,
+    question: str,
+    generator: BufferedGenerator,
+    lock: asyncio.Lock = None,
 ):
+    if lock:
+        lock.release()
+
     repository = PostgreMessageRepository()
+
     await repository.create(
         user_id=user_view.user_id,
         question=question,
@@ -31,14 +40,16 @@ async def question_route(request: Request) -> Response:
     question = response.body['data']['question']
 
     lock = request.app.model_lock
-    generator = request.app.model.generate(question, lock)
-    await lock.acquire()
+    generator = request.app.model.generate(question)
+    if lock:
+        await lock.acquire()
 
     task = BackgroundTask(
         store_message,
         generator=generator,
         question=question,
         user_view=response.authorization,
+        lock=lock,
     )
 
     return StreamingResponse(

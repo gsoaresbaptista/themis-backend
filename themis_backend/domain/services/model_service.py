@@ -3,29 +3,6 @@ from abc import ABC, abstractmethod
 from typing import Generator
 
 
-class AsyncGenerator(Generator):
-    def __init__(self, default_generator: Generator, lock: asyncio.Lock):
-        self.__generator = default_generator
-        self.__lock = lock
-
-    def send(self, value=None) -> str:
-        try:
-            text = next(self.__generator)
-            return text
-        except StopIteration:
-            self.__lock.release()
-            raise StopIteration
-
-    def __next__(self):
-        return self.send(None)
-
-    def __iter__(self):
-        return self
-
-    def throw(self, exc_type, exc_value, traceback):
-        pass
-
-
 class BufferedGenerator(Generator):
     def __init__(self, default_generator: Generator[str, None, None]):
         self.__generator = default_generator
