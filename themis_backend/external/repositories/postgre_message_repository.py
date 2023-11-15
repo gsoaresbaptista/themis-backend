@@ -2,10 +2,9 @@ from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from themis_backend.domain.entities import Message
-from themis_backend.domain.repositories import UserRepository
+from themis_backend.domain.repositories import MessageRepository
 from themis_backend.infra.database import Session
 from themis_backend.infra.schemas import MessageSchema
 
@@ -20,7 +19,7 @@ def user_row_to_entity(row: MessageSchema) -> Message:
     )
 
 
-class PostgreMessageRepository(UserRepository):
+class PostgreMessageRepository(MessageRepository):
     async def create(
         self, user_id: UUID, question: str, answer: str
     ) -> Optional[Message]:
