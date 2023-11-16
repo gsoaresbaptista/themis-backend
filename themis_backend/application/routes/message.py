@@ -12,22 +12,21 @@ from themis_backend.external.repositories.postgre_message_repository import (
     PostgreMessageRepository,
 )
 from themis_backend.presentation.controllers import QuestionController
-from themis_backend.presentation.dtos import CreateMessageDTO, UserViewDTO
+from themis_backend.presentation.dtos import CreateMessageDTO,TokenDTO
 
 
 async def store_message(
-    user_view: UserViewDTO,
+    authorization: TokenDTO,
     question: str,
     generator: BufferedGenerator,
     lock: asyncio.Lock = None,
 ):
     if lock:
         lock.release()
-
     use_case = CreateMessage(repository=PostgreMessageRepository())
-    use_case.execute(
+    await use_case.execute(
         CreateMessageDTO(
-            user_id=user_view.id,
+            user_id=authorization.user_id,
             question=question,
             answer=generator.get_text(),
         )
@@ -50,7 +49,7 @@ async def question_route(request: Request) -> Response:
         store_message,
         generator=generator,
         question=question,
-        user_view=response.authorization,
+        authorization=response.authorization,
         lock=lock,
     )
 
