@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from themis_backend.domain.entities import RefreshToken
 from themis_backend.domain.repositories import RefreshTokenRepository
@@ -38,6 +38,14 @@ class PostgreRefreshTokenRepository(RefreshTokenRepository):
             query = select(RefreshTokenSchema).where(
                 RefreshTokenSchema.user_id == user_id
             )
-            user = await session.execute(query)
+            refresh_token = await session.execute(query)
 
-        return refresh_token_row_to_entity(user.scalar())
+        return refresh_token_row_to_entity(refresh_token.scalar())
+
+    async def delete_all(self, user_id: UUID) -> None:
+        async with Session() as session:
+            query = delete(RefreshTokenSchema).where(
+                RefreshTokenSchema.user_id == user_id
+            )
+            await session.execute(query)
+            await session.commit()

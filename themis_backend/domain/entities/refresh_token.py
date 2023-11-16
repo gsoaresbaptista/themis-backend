@@ -11,6 +11,6 @@ class RefreshToken(NamedTuple):
     def to_dict(self) -> dict[str, Any]:
         return {
             'id': self.id.hex,
-            'user_id': self.user_id,
-            'expires_in': self.created_at.strftime('%Y-%m-%d, %H:%M:%S'),
+            'user_id': self.user_id.hex,
+            'expires_in': self.expires_in.strftime('%Y-%m-%d, %H:%M:%S'),
         }

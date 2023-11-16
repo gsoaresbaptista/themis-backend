@@ -1,4 +1,4 @@
-from .authorization import TokenDTO
+from .authorization import AuthorizationHeaderDTO, TokenDTO
 from .message import CreateMessageDTO
 from .user import CreateUserDTO, SignInDTO, UserDTO
 
@@ -7,5 +7,6 @@ __all__ = [
     'UserDTO',
     'SignInDTO',
     'TokenDTO',
+    'AuthorizationHeaderDTO',
     'CreateMessageDTO',
 ]

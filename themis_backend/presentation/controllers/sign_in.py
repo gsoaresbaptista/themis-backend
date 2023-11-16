@@ -14,8 +14,14 @@ class SignInController(Controller):
         password = http_request.body.get('password', None)
 
         dto = SignInDTO(email=email, password=password)
-        access_token = await self.__use_case.execute(dto)
+        authorization_header = await self.__use_case.execute(dto)
 
         return HttpResponse(
-            status_code=200, body={'data': {'access_token': access_token}}
+            status_code=200,
+            body={
+                'data': {
+                    'access_token': authorization_header.access_token,
+                    'refresh_token': authorization_header.refresh_token,
+                }
+            },
         )
