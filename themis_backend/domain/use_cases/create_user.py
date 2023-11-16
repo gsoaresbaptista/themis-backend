@@ -12,7 +12,7 @@ class CreateUser:
         self, repository: UserRepository, hash_service: HashService
     ) -> None:
         self.__repository = repository
-        self.__hash = hash
+        self.__hash = hash_service
 
     async def execute(self, user_dto: CreateUserDTO) -> Optional[User]:
         validator = CreateUserValidator(user_dto)
