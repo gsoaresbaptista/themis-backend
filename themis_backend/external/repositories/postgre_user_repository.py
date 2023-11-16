@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -49,6 +50,13 @@ class PostgreUserRepository(UserRepository):
     async def search_by_email(self, email: str) -> Optional[User]:
         async with Session() as session:
             query = select(UserSchema).where(UserSchema.email == email)
+            user = await session.execute(query)
+
+        return user_row_to_entity(user.scalar())
+
+    async def search_by_id(self, user_id: UUID) -> Optional[User]:
+        async with Session() as session:
+            query = select(UserSchema).where(UserSchema.id == user_id)
             user = await session.execute(query)
 
         return user_row_to_entity(user.scalar())

@@ -11,7 +11,11 @@ class RefreshTokenRepository(ABC):
         ...
 
     @abstractmethod
-    async def search_by_user_id(self, user_id: str) -> Optional[RefreshToken]:
+    async def search_by_id(self, token_id: UUID) -> Optional[RefreshToken]:
+        ...
+
+    @abstractmethod
+    async def search_by_user_id(self, user_id: UUID) -> Optional[RefreshToken]:
         ...
 
     @abstractmethod
