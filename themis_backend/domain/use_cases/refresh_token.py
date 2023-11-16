@@ -47,7 +47,7 @@ class RefreshToken:
                     refresh_token.user_id
                 )
                 if user is not None:
-                    access_token = self.__token_service.create(
+                    access_token = await self.__token_service.create(
                         User(
                             id=user.id,
                             name=user.name,

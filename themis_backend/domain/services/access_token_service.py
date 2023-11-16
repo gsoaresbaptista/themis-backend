@@ -10,9 +10,9 @@ from themis_backend.presentation.dtos import (
 
 class AccessTokenService(ABC):
     @abstractmethod
-    def create(self, user: UserDTO) -> AuthorizationHeaderDTO:
+    async def create(self, user: UserDTO) -> AuthorizationHeaderDTO:
         ...
 
     @abstractmethod
-    def decode(self, token: str) -> Optional[TokenDTO]:
+    async def decode(self, token: str) -> Optional[TokenDTO]:
         ...

@@ -15,7 +15,7 @@ class JTWAccessTokenService(AccessTokenService):
         self.__algorithm = TokenSettings.ALGORITHM
         self.__secret_key = TokenSettings.SECRET_KEY
 
-    def create(self, user: User) -> str:
+    async def create(self, user: User) -> str:
 
         data = user.to_dict()
         expire = datetime.utcnow() + timedelta(minutes=self.__expire_minutes)
@@ -26,7 +26,7 @@ class JTWAccessTokenService(AccessTokenService):
 
         return encoded_jwt
 
-    def decode(self, token: str) -> Optional[TokenDTO]:
+    async def decode(self, token: str) -> Optional[TokenDTO]:
         try:
             payload = jwt.decode(
                 token, key=self.__secret_key, algorithms=self.__algorithm

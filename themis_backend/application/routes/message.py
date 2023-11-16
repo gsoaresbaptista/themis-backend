@@ -12,6 +12,7 @@ from themis_backend.application.factories import (
     delete_message_compose,
     get_messages_compose,
 )
+from themis_backend.config import ModelSettings
 from themis_backend.domain.services import BufferedGenerator
 from themis_backend.domain.use_cases import CreateMessage, UpdateMessageAnswer
 from themis_backend.external.repositories.postgre_message_repository import (
@@ -67,7 +68,7 @@ async def question_route(request: Request) -> Response:
     )
 
     question = response.body['data']['question']
-    generator = request.app.model.generate(question)
+    generator = await request.app.model.generate(question)
 
     lock = request.app.model_lock
     if lock:
@@ -96,8 +97,8 @@ async def continue_answer(request: Request) -> Response:
     )
 
     message = response.body['data']['message']
-    previous_answer = message.answer[-512:]
-    generator = request.app.model.generate(previous_answer)
+    previous_answer = message.answer[-ModelSettings.ANSWER_LENGTH :]
+    generator = await request.app.model.generate(previous_answer)
 
     lock = request.app.model_lock
     if lock:

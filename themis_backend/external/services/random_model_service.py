@@ -3,17 +3,17 @@ import string
 import time
 from typing import Generator
 
-from themis_backend.domain.services import BufferedGenerator
+from themis_backend.domain.services import BufferedGenerator, ModelService
 
 
-class RandomModelService:
+class RandomModelService(ModelService):
     def __init__(self) -> None:
         self.__model = random_generator
 
-    def generate(self, question: str) -> BufferedGenerator:
+    async def generate(self, question: str) -> BufferedGenerator:
         return BufferedGenerator(self.__model())
 
-    def tokenize(self, question: str) -> list[str]:
+    async def tokenize(self, question: str) -> list[str]:
         return question.split(' ')
 
 

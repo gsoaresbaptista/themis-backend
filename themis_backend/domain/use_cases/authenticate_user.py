@@ -12,4 +12,4 @@ class AuthenticateUser:
         if bearer_token is None:
             return None
         _, token = bearer_token.split(' ', 1)
-        return self.__token.decode(token)
+        return await self.__token.decode(token)

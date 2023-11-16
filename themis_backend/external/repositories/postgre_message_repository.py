@@ -10,7 +10,6 @@ from themis_backend.infra.schemas import MessageSchema
 
 
 def user_row_to_entity(row: MessageSchema) -> Message:
-    print('aAa', row, 'AAA')
     return Message(
         id=row.id,
         user_id=row.user_id,

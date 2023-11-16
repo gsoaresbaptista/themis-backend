@@ -31,11 +31,11 @@ class BufferedGenerator(Generator):
 
 class ModelService(ABC):
     @abstractmethod
-    def generate(
+    async def generate(
         self, question: str, lock: asyncio.Lock = None
     ) -> BufferedGenerator:
         ...
 
     @abstractmethod
-    def tokenize(self, question: str) -> list[str]:
+    async def tokenize(self, question: str) -> list[str]:
         ...
