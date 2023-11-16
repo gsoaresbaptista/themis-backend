@@ -22,9 +22,12 @@ class RefreshToken:
         self.__token_service = token_service
 
     async def execute(self, refresh_token_id: UUID) -> str:
-        refresh_token = await self.__refresh_token_repository.search_by_id(
-            refresh_token_id
-        )
+        try:
+            refresh_token = await self.__refresh_token_repository.search_by_id(
+                refresh_token_id
+            )
+        except:   # noqa: E722
+            raise HTTPUnauthorized()
 
         if refresh_token is not None:
             expires_in = refresh_token.expires_in
@@ -34,15 +37,16 @@ class RefreshToken:
                 user = await self.__user_repository.search_by_id(
                     refresh_token.user_id
                 )
-                return self.__token_service.create(
-                    User(
-                        id=user.id,
-                        name=user.name,
-                        email=user.email,
-                        hashed_password=user.hashed_password,
-                        created_at=user.created_at,
-                        updated_at=user.updated_at,
+                if user is not None:
+                    return self.__token_service.create(
+                        User(
+                            id=user.id,
+                            name=user.name,
+                            email=user.email,
+                            hashed_password=user.hashed_password,
+                            created_at=user.created_at,
+                            updated_at=user.updated_at,
+                        )
                     )
-                )
 
         raise HTTPUnauthorized()
