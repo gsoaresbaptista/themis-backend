@@ -22,7 +22,9 @@ class RefreshToken:
         self.__user_repository = user_repository
         self.__token_service = token_service
 
-    async def execute(self, refresh_token_id: UUID) -> AuthorizationHeaderDTO:
+    async def execute(
+        self, refresh_token_id: UUID | str
+    ) -> AuthorizationHeaderDTO:
         try:
             refresh_token = await self.__refresh_token_repository.search_by_id(
                 refresh_token_id

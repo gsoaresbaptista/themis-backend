@@ -17,5 +17,5 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
-    async def search_by_id(self, user_id: UUID) -> Optional[User]:
+    async def search_by_id(self, user_id: UUID | str) -> Optional[User]:
         ...

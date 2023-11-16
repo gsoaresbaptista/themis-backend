@@ -22,7 +22,7 @@ def refresh_token_row_to_entity(
 
 
 class PostgreRefreshTokenRepository(RefreshTokenRepository):
-    async def create(self, user_id: UUID) -> Optional[RefreshToken]:
+    async def create(self, user_id: UUID | str) -> Optional[RefreshToken]:
 
         refresh_token = RefreshTokenSchema(user_id=user_id)
 
@@ -33,7 +33,9 @@ class PostgreRefreshTokenRepository(RefreshTokenRepository):
 
         return refresh_token_row_to_entity(refresh_token)
 
-    async def search_by_user_id(self, user_id: UUID) -> Optional[RefreshToken]:
+    async def search_by_user_id(
+        self, user_id: UUID | str
+    ) -> Optional[RefreshToken]:
         async with Session() as session:
             query = select(RefreshTokenSchema).where(
                 RefreshTokenSchema.user_id == user_id
@@ -42,7 +44,7 @@ class PostgreRefreshTokenRepository(RefreshTokenRepository):
 
         return refresh_token_row_to_entity(refresh_token.scalar())
 
-    async def delete_all(self, user_id: UUID) -> None:
+    async def delete_all(self, user_id: UUID | str) -> None:
         async with Session() as session:
             query = delete(RefreshTokenSchema).where(
                 RefreshTokenSchema.user_id == user_id
@@ -50,7 +52,9 @@ class PostgreRefreshTokenRepository(RefreshTokenRepository):
             await session.execute(query)
             await session.commit()
 
-    async def search_by_id(self, token_id: UUID) -> Optional[RefreshToken]:
+    async def search_by_id(
+        self, token_id: UUID | str
+    ) -> Optional[RefreshToken]:
         async with Session() as session:
             query = select(RefreshTokenSchema).where(
                 RefreshTokenSchema.id == token_id
