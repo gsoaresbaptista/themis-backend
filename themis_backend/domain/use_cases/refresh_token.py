@@ -1,12 +1,12 @@
 from datetime import datetime
 from uuid import UUID
 
+from themis_backend.domain.entities import User
 from themis_backend.domain.repositories import (
     RefreshTokenRepository,
     UserRepository,
 )
 from themis_backend.domain.services import AccessTokenService
-from themis_backend.presentation.dtos import UserDTO
 from themis_backend.presentation.http.errors import HTTPUnauthorized
 
 
@@ -22,7 +22,9 @@ class RefreshToken:
         self.__token_service = token_service
 
     async def execute(self, refresh_token_id: UUID) -> str:
-        refresh_token = await self.__repository.search_by_id(refresh_token_id)
+        refresh_token = await self.__refresh_token_repository.search_by_id(
+            refresh_token_id
+        )
 
         if refresh_token is not None:
             expires_in = refresh_token.expires_in
@@ -32,9 +34,8 @@ class RefreshToken:
                 user = await self.__user_repository.search_by_id(
                     refresh_token.user_id
                 )
-
                 return self.__token_service.create(
-                    UserDTO(
+                    User(
                         id=user.id,
                         name=user.name,
                         email=user.email,
