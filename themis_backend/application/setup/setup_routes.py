@@ -2,6 +2,7 @@ from starlette.applications import Starlette
 
 from themis_backend.application.routes import (
     create_user_route,
+    get_messages,
     question_route,
     refresh_token_route,
     sign_in_route,
@@ -16,3 +17,4 @@ def setup_routes(app: Starlette) -> None:
         '/users/refresh-token', refresh_token_route, methods=['POST']
     )
     app.add_route('/messages/question', question_route, methods=['POST'])
+    app.add_route('/messages/', get_messages, methods=['GET'])

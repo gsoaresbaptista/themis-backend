@@ -43,5 +43,6 @@ class PostgreMessageRepository(MessageRepository):
                 MessageSchema.user_id == user_id
             )
             messages = await session.execute(query)
+            messages = messages.scalars()
 
-        return [user_row_to_entity(message) for message in messages]
+        return [user_row_to_entity(message).to_dict() for message in messages]

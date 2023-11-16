@@ -1,6 +1,7 @@
 from .authenticate_user import AuthenticateUser
 from .create_message import CreateMessage
 from .create_user import CreateUser
+from .get_messages import GetMessages
 from .refresh_token import RefreshToken
 from .sign_in import SignIn
 
@@ -10,4 +11,5 @@ __all__ = [
     'AuthenticateUser',
     'CreateMessage',
     'RefreshToken',
+    'GetMessages',
 ]

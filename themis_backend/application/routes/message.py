@@ -2,10 +2,13 @@ import asyncio
 
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import Response, StreamingResponse
+from starlette.responses import JSONResponse, Response, StreamingResponse
 
 from themis_backend.application.adapters import request_adapter
-from themis_backend.application.factories import authenticate_composer
+from themis_backend.application.factories import (
+    authenticate_composer,
+    get_messages_compose,
+)
 from themis_backend.domain.services import BufferedGenerator
 from themis_backend.domain.use_cases import CreateMessage
 from themis_backend.external.repositories.postgre_message_repository import (
@@ -57,4 +60,15 @@ async def question_route(request: Request) -> Response:
         generator,
         media_type='text/plain',
         background=task,
+    )
+
+
+async def get_messages(request: Request) -> Response:
+    response = await request_adapter(
+        request, get_messages_compose(), middlewares=[authenticate_composer()]
+    )
+
+    return JSONResponse(
+        status_code=200,
+        content=response.body,
     )

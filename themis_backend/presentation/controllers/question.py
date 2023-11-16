@@ -15,7 +15,7 @@ class QuestionController(Controller):
             raise EmptyQuestionNotAllowed()
 
         return HttpResponse(
-            status_code=201,
+            status_code=200,
             body={'data': {'question': question}},
             authorization=http_request.authorization,
         )
