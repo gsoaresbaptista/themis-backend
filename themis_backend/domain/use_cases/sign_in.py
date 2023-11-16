@@ -31,42 +31,48 @@ class SignIn:
         validator = SignInValidator(sign_in_dto)
         validator.validate()
 
-        user = await self.__user_repository.search_by_email(
-            email=sign_in_dto.email
+        user = await self.__get_user(sign_in_dto.email)
+        await self.__validate_user(user, sign_in_dto.password)
+
+        access_token = await self.__token.create(user)
+        refresh_token = await self.__get_or_create_refresh_token(user)
+
+        return AuthorizationHeaderDTO(
+            access_token=access_token,
+            refresh_token=refresh_token.to_dict(),
         )
 
+    async def __get_user(self, email: str):
+        user = await self.__user_repository.search_by_email(email=email)
         if not user:
             raise UserNotFound()
+        return user
 
-        if self.__hash.compare(sign_in_dto.password, user.hashed_password):
-            access_token = self.__token.create(user)
-
-            refresh_token = (
-                await self.__refresh_token_repository.search_by_user_id(
-                    user.id
-                )
-            )
-
-            expires_in = refresh_token.expires_in
-            now = datetime.now(refresh_token.expires_in.tzinfo)
-
-            if refresh_token is None or expires_in < now:
-                await self.__refresh_token_repository.delete_all(
-                    user_id=user.id
-                )
-                refresh_token = await self.__refresh_token_repository.create(
-                    user_id=user.id
-                )
-
-            refresh_token = RefreshToken(
-                id=refresh_token.id,
-                user_id=refresh_token.id,
-                expires_in=refresh_token.expires_in,
-            )
-
-            return AuthorizationHeaderDTO(
-                access_token=access_token,
-                refresh_token=refresh_token.to_dict(),
-            )
-        else:
+    async def __validate_user(self, user, password):
+        if not self.__hash.compare(password, user.hashed_password):
             raise IncorrectPassword()
+
+    async def __get_or_create_refresh_token(self, user):
+        refresh_token = (
+            await self.__refresh_token_repository.search_by_user_id(user.id)
+        )
+        to_create = refresh_token is None
+
+        if (
+            refresh_token is not None
+            and refresh_token.expires_in
+            < datetime.now(refresh_token.expires_in.tzinfo)
+        ):
+            await self.__refresh_token_repository.delete_all(user_id=user.id)
+            to_create = True
+
+        if to_create:
+            refresh_token = await self.__refresh_token_repository.create(
+                user_id=user.id
+            )
+
+        return RefreshToken(
+            id=refresh_token.id,
+            user_id=refresh_token.id,
+            expires_in=refresh_token.expires_in,
+        )
