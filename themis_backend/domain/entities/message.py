@@ -7,4 +7,4 @@ class Message(NamedTuple):
     user_id: UUID
     question: str
     answer: str
-    create_at: str
+    created_at: str

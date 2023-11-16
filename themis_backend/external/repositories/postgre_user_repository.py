@@ -13,10 +13,12 @@ from themis_backend.presentation.http import UserAlreadyExists
 def user_row_to_entity(row: UserSchema) -> Optional[User]:
     if row:
         return User(
-            id=row.id,
+            id=row.id.hex,
             name=row.name,
             email=row.email,
             hashed_password=row.hashed_password,
+            created_at=row.created_at,
+            updated_at=row.updated_at,
         )
     return None
 

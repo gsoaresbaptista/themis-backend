@@ -1,7 +1,8 @@
 import uuid
 
+from datetime import datetime
+from sqlalchemy import CHAR, VARCHAR, Uuid, DateTime, func
 from sqlalchemy.orm import MappedColumn, mapped_column
-from sqlalchemy.types import CHAR, VARCHAR, Uuid
 
 from themis_backend.infra.schemas.base import BaseSchema
 
@@ -15,6 +16,12 @@ class UserSchema(BaseSchema):
     name: MappedColumn[str] = mapped_column(VARCHAR(length=80))
     email: MappedColumn[str] = mapped_column(VARCHAR(length=255), unique=True)
     hashed_password: MappedColumn[str] = mapped_column(CHAR(length=60))
+    created_at: MappedColumn[datetime] = mapped_column(
+        DateTime(timezone=True), default=func.now()
+    )
+    updated_at: MappedColumn[datetime] = mapped_column(
+        DateTime(timezone=True), default=func.now()
+    )
 
     def __repr__(self):
         return f'<UserSchema (Name={self.name}, E-mail={self.email}>'

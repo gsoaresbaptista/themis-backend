@@ -12,7 +12,7 @@ from themis_backend.external.repositories.postgre_message_repository import (
     PostgreMessageRepository,
 )
 from themis_backend.presentation.controllers import QuestionController
-from themis_backend.presentation.dtos import CreateMessageDTO,TokenDTO
+from themis_backend.presentation.dtos import CreateMessageDTO, TokenDTO
 
 
 async def store_message(

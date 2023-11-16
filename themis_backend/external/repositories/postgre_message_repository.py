@@ -11,11 +11,11 @@ from themis_backend.infra.schemas import MessageSchema
 
 def user_row_to_entity(row: MessageSchema) -> Message:
     return Message(
-        id=row.id,
-        user_id=row.user_id,
+        id=row.id.hex,
+        user_id=row.user_id.hex,
         question=row.question,
         answer=row.answer,
-        create_at=row.create_at,
+        created_at=row.created_at,
     )
 
 

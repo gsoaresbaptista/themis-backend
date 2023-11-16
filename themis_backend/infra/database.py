@@ -5,6 +5,7 @@ from themis_backend.infra.schemas import (  # noqa: F401
     BaseSchema,
     MessageSchema,
     UserSchema,
+    RefreshToken,
 )
 
 
