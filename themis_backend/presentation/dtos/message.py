@@ -19,6 +19,7 @@ class ClearChatDTO(NamedTuple):
 
 class ContinueAnswerDTO(NamedTuple):
     message_id: UUID | str
+    user_id: UUID | str
 
 
 class UpdateMessageAnswerDTO(NamedTuple):

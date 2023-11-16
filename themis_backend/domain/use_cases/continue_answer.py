@@ -13,7 +13,7 @@ class ContinueAnswer:
         self, continue_dto: ContinueAnswerDTO
     ) -> Optional[Message]:
         message = await self.__repository.search_by_id(
-            message_id=continue_dto.message_id
+            message_id=continue_dto.message_id, user_id=continue_dto.user_id
         )
 
         return message

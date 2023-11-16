@@ -11,7 +11,8 @@ class ContinueAnswerController(Controller):
 
     async def handle(self, http_request: HttpRequest) -> HttpResponse:
         continue_dto = ContinueAnswerDTO(
-            message_id=http_request.body.get('message-id', None)
+            message_id=http_request.body.get('message-id', None),
+            user_id=http_request.authorization.user_id,
         )
 
         message = await self.__use_case.execute(continue_dto)

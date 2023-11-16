@@ -10,6 +10,7 @@ from themis_backend.infra.schemas import MessageSchema
 
 
 def user_row_to_entity(row: MessageSchema) -> Message:
+    print('aAa', row, 'AAA')
     return Message(
         id=row.id,
         user_id=row.user_id,
@@ -46,9 +47,22 @@ class PostgreMessageRepository(MessageRepository):
 
         return [user_row_to_entity(message).to_dict() for message in messages]
 
-    async def search_by_id(self, message_id: UUID | str) -> Optional[Message]:
+    async def search_by_id(
+        self, message_id: UUID | str, user_id: UUID | str
+    ) -> Optional[Message]:
         async with Session() as session:
-            query = select(MessageSchema).where(MessageSchema.id == message_id)
+            if message_id != '' and message_id is not None:
+                query = select(MessageSchema).where(
+                    MessageSchema.id
+                    == message_id & MessageSchema.user_id
+                    == user_id
+                )
+            else:
+                query = (
+                    select(MessageSchema)
+                    .where(MessageSchema.user_id == user_id)
+                    .order_by(MessageSchema.created_at.desc())
+                )
             message = await session.execute(query)
             message = message.scalar()
 
