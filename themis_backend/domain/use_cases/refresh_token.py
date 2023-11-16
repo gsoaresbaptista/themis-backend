@@ -1,5 +1,4 @@
 from datetime import datetime
-from uuid import UUID
 
 from themis_backend.domain.entities import User
 from themis_backend.domain.repositories import (
@@ -7,8 +6,12 @@ from themis_backend.domain.repositories import (
     UserRepository,
 )
 from themis_backend.domain.services import AccessTokenService
-from themis_backend.presentation.dtos import AuthorizationHeaderDTO
+from themis_backend.presentation.dtos import (
+    AuthorizationHeaderDTO,
+    RefreshTokenDTO,
+)
 from themis_backend.presentation.http.errors import HTTPUnauthorized
+from themis_backend.presentation.validators import RefreshTokenValidator
 
 
 class RefreshToken:
@@ -23,11 +26,14 @@ class RefreshToken:
         self.__token_service = token_service
 
     async def execute(
-        self, refresh_token_id: UUID | str
+        self, refresh_token: RefreshTokenDTO
     ) -> AuthorizationHeaderDTO:
+        validator = RefreshTokenValidator(refresh_token)
+        validator.validate()
+
         try:
             refresh_token = await self.__refresh_token_repository.search_by_id(
-                refresh_token_id
+                refresh_token.refresh_token
             )
         except:   # noqa: E722
             raise HTTPUnauthorized()

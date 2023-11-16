@@ -1,10 +1,7 @@
-from json import JSONDecodeError
-
 from starlette.requests import Request
 
 from themis_backend.presentation.controllers import Controller
 from themis_backend.presentation.http import HttpRequest, HttpResponse
-from themis_backend.presentation.http.errors import HTTPBadRequest
 
 
 async def request_adapter(
@@ -17,8 +14,8 @@ async def request_adapter(
     if request.method in ['POST', 'PUT']:
         try:
             body = await request.json()
-        except JSONDecodeError:
-            raise HTTPBadRequest()
+        except:  # noqa: E722
+            pass
 
     body.update(request.path_params)
     body.update(request.query_params)

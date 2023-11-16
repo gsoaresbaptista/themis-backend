@@ -1,4 +1,4 @@
-from .authorization import AuthorizationHeaderDTO, TokenDTO
+from .authorization import AuthorizationHeaderDTO, RefreshTokenDTO, TokenDTO
 from .message import (
     ClearChatDTO,
     ContinueAnswerDTO,
@@ -9,6 +9,7 @@ from .message import (
 from .user import CreateUserDTO, SignInDTO, UserDTO
 
 __all__ = [
+    'RefreshTokenDTO',
     'CreateUserDTO',
     'UserDTO',
     'SignInDTO',

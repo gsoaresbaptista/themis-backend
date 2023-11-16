@@ -10,3 +10,7 @@ class TokenDTO(NamedTuple):
 class AuthorizationHeaderDTO(NamedTuple):
     access_token: str
     refresh_token: dict[str, str]
+
+
+class RefreshTokenDTO(NamedTuple):
+    refresh_token: str
