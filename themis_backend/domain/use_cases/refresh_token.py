@@ -7,6 +7,7 @@ from themis_backend.domain.repositories import (
     UserRepository,
 )
 from themis_backend.domain.services import AccessTokenService
+from themis_backend.presentation.dtos import AuthorizationHeaderDTO
 from themis_backend.presentation.http.errors import HTTPUnauthorized
 
 
@@ -21,7 +22,7 @@ class RefreshToken:
         self.__user_repository = user_repository
         self.__token_service = token_service
 
-    async def execute(self, refresh_token_id: UUID) -> str:
+    async def execute(self, refresh_token_id: UUID) -> AuthorizationHeaderDTO:
         try:
             refresh_token = await self.__refresh_token_repository.search_by_id(
                 refresh_token_id
@@ -38,7 +39,7 @@ class RefreshToken:
                     refresh_token.user_id
                 )
                 if user is not None:
-                    return self.__token_service.create(
+                    access_token = self.__token_service.create(
                         User(
                             id=user.id,
                             name=user.name,
@@ -47,6 +48,18 @@ class RefreshToken:
                             created_at=user.created_at,
                             updated_at=user.updated_at,
                         )
+                    )
+                    await self.__refresh_token_repository.delete_all(
+                        user_id=user.id
+                    )
+                    refresh_token = (
+                        await self.__refresh_token_repository.create(
+                            user_id=user.id
+                        )
+                    )
+                    return AuthorizationHeaderDTO(
+                        access_token=access_token,
+                        refresh_token=refresh_token.to_dict(),
                     )
 
         raise HTTPUnauthorized()

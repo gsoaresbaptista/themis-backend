@@ -10,14 +10,14 @@ class RefreshTokenController(Controller):
 
     async def handle(self, http_request: HttpRequest) -> HttpResponse:
         refresh_token = http_request.body.get('refresh-token', None)
-        access_token = await self.__use_case.execute(refresh_token)
+        authorization_header = await self.__use_case.execute(refresh_token)
 
         return HttpResponse(
             status_code=200,
             body={
                 'data': {
-                    'access_token': access_token,
-                    'refresh_token': {'id': refresh_token},
+                    'access_token': authorization_header.access_token,
+                    'refresh_token': authorization_header.refresh_token,
                 }
             },
         )
