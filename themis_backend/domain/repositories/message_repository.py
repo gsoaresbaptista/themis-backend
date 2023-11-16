@@ -17,9 +17,9 @@ class MessageRepository(ABC):
         ...
 
     @abstractmethod
-    async def delete(self, message_ir: UUID | str) -> None:
+    async def delete(self, message_id: UUID | str) -> UUID | str:
         ...
 
     @abstractmethod
-    async def delete_all(self, user_id: UUID | str) -> None:
+    async def delete_all(self, user_id: UUID | str) -> list[UUID | str]:
         ...

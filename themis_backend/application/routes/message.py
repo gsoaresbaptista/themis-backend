@@ -7,6 +7,8 @@ from starlette.responses import JSONResponse, Response, StreamingResponse
 from themis_backend.application.adapters import request_adapter
 from themis_backend.application.factories import (
     authenticate_composer,
+    clear_chat_compose,
+    delete_message_compose,
     get_messages_compose,
 )
 from themis_backend.domain.services import BufferedGenerator
@@ -69,6 +71,32 @@ async def get_messages(request: Request) -> Response:
     )
 
     return JSONResponse(
-        status_code=200,
+        status_code=response.status_code,
+        content=response.body,
+    )
+
+
+async def delete_message(request: Request) -> Response:
+    response = await request_adapter(
+        request,
+        delete_message_compose(),
+        middlewares=[authenticate_composer()],
+    )
+
+    return JSONResponse(
+        status_code=response.status_code,
+        content=response.body,
+    )
+
+
+async def clear_chat(request: Request) -> Response:
+    response = await request_adapter(
+        request,
+        clear_chat_compose(),
+        middlewares=[authenticate_composer()],
+    )
+
+    return JSONResponse(
+        status_code=response.status_code,
         content=response.body,
     )

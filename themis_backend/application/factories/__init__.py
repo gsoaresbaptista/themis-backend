@@ -1,4 +1,6 @@
 from .authenticate import authenticate_composer
+from .clear_chat import clear_chat_compose
+from .delete_message import delete_message_compose
 from .get_messages_compose import get_messages_compose
 from .refresh_token import refresh_token_composer
 from .sign_in import sign_in_composer
@@ -10,4 +12,6 @@ __all__ = [
     'authenticate_composer',
     'refresh_token_composer',
     'get_messages_compose',
+    'delete_message_compose',
+    'clear_chat_compose',
 ]

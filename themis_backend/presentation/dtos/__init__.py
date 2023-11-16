@@ -1,5 +1,5 @@
 from .authorization import AuthorizationHeaderDTO, TokenDTO
-from .message import CreateMessageDTO
+from .message import ClearChatDTO, CreateMessageDTO, DeleteMessageDTO
 from .user import CreateUserDTO, SignInDTO, UserDTO
 
 __all__ = [
@@ -9,4 +9,6 @@ __all__ = [
     'TokenDTO',
     'AuthorizationHeaderDTO',
     'CreateMessageDTO',
+    'DeleteMessageDTO',
+    'ClearChatDTO',
 ]

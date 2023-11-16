@@ -47,16 +47,37 @@ class PostgreMessageRepository(MessageRepository):
 
         return [user_row_to_entity(message).to_dict() for message in messages]
 
-    async def delete(self, message_id: UUID | str) -> None:
+    async def delete(
+        self, message_id: UUID | str, user_id: UUID | str
+    ) -> UUID | str:
         async with Session() as session:
-            query = delete(MessageSchema).where(MessageSchema.id == message_id)
-            await session.execute(query)
+            query = (
+                delete(MessageSchema)
+                .where(
+                    (MessageSchema.id == message_id)
+                    & (MessageSchema.user_id == user_id)
+                )
+                .returning(MessageSchema.id)
+            )
+            message = await session.execute(query)
+            message = message.fetchone()
             await session.commit()
 
-    async def delete_all(self, user_id: UUID | str) -> None:
+        return message.hex if message is not None else None
+
+    async def delete_all(self, user_id: UUID | str) -> list[UUID | str]:
         async with Session() as session:
-            query = delete(MessageSchema).where(
-                MessageSchema.user_id == user_id
+            query = (
+                delete(MessageSchema)
+                .where((MessageSchema.user_id == user_id))
+                .returning(MessageSchema.id)
             )
-            await session.execute(query)
+            messages = await session.execute(query)
+            messages = messages.scalars()
             await session.commit()
+
+        return (
+            [message.hex for message in messages if messages is not None]
+            if messages is not None
+            else []
+        )

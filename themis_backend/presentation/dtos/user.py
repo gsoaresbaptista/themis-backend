@@ -12,7 +12,7 @@ class CreateUserDTO(NamedTuple):
 
 
 class UserDTO(NamedTuple):
-    id: UUID
+    id: UUID | str
     name: str
     email: str
     hashed_password: str

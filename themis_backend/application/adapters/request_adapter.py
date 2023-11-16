@@ -14,11 +14,14 @@ async def request_adapter(
 ) -> HttpResponse:
     body = {}
 
-    if request.method != 'GET':
+    if request.method in ['POST', 'PUT']:
         try:
             body = await request.json()
         except JSONDecodeError:
             raise HTTPBadRequest()
+
+    body.update(request.path_params)
+    body.update(request.query_params)
 
     http_request = HttpRequest(body=body, header=request.headers)
 

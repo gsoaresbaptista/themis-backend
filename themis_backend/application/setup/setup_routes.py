@@ -1,7 +1,9 @@
 from starlette.applications import Starlette
 
 from themis_backend.application.routes import (
+    clear_chat,
     create_user_route,
+    delete_message,
     get_messages,
     question_route,
     refresh_token_route,
@@ -17,4 +19,8 @@ def setup_routes(app: Starlette) -> None:
         '/users/refresh-token', refresh_token_route, methods=['POST']
     )
     app.add_route('/messages/question', question_route, methods=['POST'])
-    app.add_route('/messages/', get_messages, methods=['GET'])
+    app.add_route('/messages', get_messages, methods=['GET'])
+    app.add_route(
+        '/messages/{message_id:str}', delete_message, methods=['DELETE']
+    )
+    app.add_route('/messages', clear_chat, methods=['DELETE'])

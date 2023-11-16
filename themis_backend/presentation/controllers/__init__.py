@@ -1,6 +1,8 @@
 from .authenticate_user import AuthenticateUserController
+from .clear_chat import ClearChatController
 from .controller import Controller
 from .create_user import CreateUserController
+from .delete_message import DeleteMessageController
 from .get_messages import GetMessagesController
 from .question import QuestionController
 from .refresh_token import RefreshTokenController
@@ -14,4 +16,6 @@ __all__ = [
     'QuestionController',
     'RefreshTokenController',
     'GetMessagesController',
+    'DeleteMessageController',
+    'ClearChatController',
 ]
