@@ -15,3 +15,13 @@ class DeleteMessageDTO(NamedTuple):
 
 class ClearChatDTO(NamedTuple):
     user_id: UUID | str
+
+
+class ContinueAnswerDTO(NamedTuple):
+    message_id: UUID | str
+
+
+class UpdateMessageAnswerDTO(NamedTuple):
+    user_id: UUID | str
+    message_id: UUID | str
+    answer: str

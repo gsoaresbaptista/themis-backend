@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 
 from themis_backend.domain.entities import Message
 from themis_backend.domain.repositories import MessageRepository
@@ -34,7 +34,6 @@ class PostgreMessageRepository(MessageRepository):
             session.add(message)
             await session.commit()
             await session.refresh(message)
-
         return user_row_to_entity(message)
 
     async def search_by_user_id(self, user_id: UUID | str) -> list[Message]:
@@ -46,6 +45,14 @@ class PostgreMessageRepository(MessageRepository):
             messages = messages.scalars()
 
         return [user_row_to_entity(message).to_dict() for message in messages]
+
+    async def search_by_id(self, message_id: UUID | str) -> Optional[Message]:
+        async with Session() as session:
+            query = select(MessageSchema).where(MessageSchema.id == message_id)
+            message = await session.execute(query)
+            message = message.scalar()
+
+        return user_row_to_entity(message) if message is not None else None
 
     async def delete(
         self, message_id: UUID | str, user_id: UUID | str
@@ -81,3 +88,18 @@ class PostgreMessageRepository(MessageRepository):
             if messages is not None
             else []
         )
+
+    async def update_answer(
+        self, user_id: UUID | str, message_id: UUID | str, answer: str
+    ) -> list[UUID | str]:
+        async with Session() as session:
+            query = (
+                update(MessageSchema)
+                .where(
+                    (MessageSchema.user_id == user_id)
+                    & (MessageSchema.id == message_id)
+                )
+                .values(answer=answer)
+            )
+            await session.execute(query)
+            await session.commit()

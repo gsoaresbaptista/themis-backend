@@ -1,5 +1,6 @@
 from .authenticate_user import AuthenticateUserController
 from .clear_chat import ClearChatController
+from .continue_answer import ContinueAnswerController
 from .controller import Controller
 from .create_user import CreateUserController
 from .delete_message import DeleteMessageController
@@ -18,4 +19,5 @@ __all__ = [
     'GetMessagesController',
     'DeleteMessageController',
     'ClearChatController',
+    'ContinueAnswerController',
 ]

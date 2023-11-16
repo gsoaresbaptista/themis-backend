@@ -17,9 +17,19 @@ class MessageRepository(ABC):
         ...
 
     @abstractmethod
+    async def search_by_id(self, message_id: UUID | str) -> Optional[Message]:
+        ...
+
+    @abstractmethod
     async def delete(self, message_id: UUID | str) -> UUID | str:
         ...
 
     @abstractmethod
     async def delete_all(self, user_id: UUID | str) -> list[UUID | str]:
+        ...
+
+    @abstractmethod
+    async def update_answer(
+        self, user_id: UUID | str, message_id: UUID | str, answer: str
+    ) -> list[UUID | str]:
         ...

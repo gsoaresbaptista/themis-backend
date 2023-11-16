@@ -25,3 +25,4 @@ class ModelSettings:
     FILE_PATH: str = env_file.get('MODEL_FILE_PATH')
     TYPE: str = env_file.get('MODEL_TYPE')
     GPU_LAYERS: int = int(env_file.get('MODEL_GPU_LAYERS', 50))
+    ANSWER_LENGTH: int = int(env_file.get('MODEL_ANSWER_LENGTH'))
