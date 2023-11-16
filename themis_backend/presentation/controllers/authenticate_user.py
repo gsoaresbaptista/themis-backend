@@ -9,7 +9,7 @@ class AuthenticateUserController(Controller):
         self.__use_case = use_case
 
     async def handle(self, http_request: HttpRequest) -> HttpRequest:
-        token = http_request.header.get('Authorization')
+        token = http_request.header.get('Authorization', None)
         token = await self.__use_case.execute(token)
 
         if token is None:

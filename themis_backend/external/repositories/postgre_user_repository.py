@@ -13,7 +13,7 @@ from themis_backend.presentation.http import UserAlreadyExists
 def user_row_to_entity(row: UserSchema) -> Optional[User]:
     if row:
         return User(
-            id=row.id.hex,
+            id=row.id,
             name=row.name,
             email=row.email,
             hashed_password=row.hashed_password,

@@ -5,7 +5,7 @@ from jose import JWTError, jwt
 
 from themis_backend.config import TokenSettings
 from themis_backend.domain.services import AccessTokenService
-from themis_backend.presentation.dtos import TokenDTO, UserViewDTO
+from themis_backend.presentation.dtos import TokenDTO, UserDTO
 
 
 class JTWAccessTokenService(AccessTokenService):
@@ -14,9 +14,9 @@ class JTWAccessTokenService(AccessTokenService):
         self.__algorithm = TokenSettings.ALGORITHM
         self.__secret_key = TokenSettings.SECRET_KEY
 
-    def create(self, user: UserViewDTO) -> str:
+    def create(self, user: UserDTO) -> str:
 
-        data = user._asdict()
+        data = user.to_dict()
         expire = datetime.utcnow() + timedelta(minutes=self.__expire_minutes)
         data.update({'exp': expire})
         encoded_jwt = jwt.encode(

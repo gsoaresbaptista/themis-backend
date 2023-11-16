@@ -7,7 +7,7 @@ from sqlalchemy.orm import MappedColumn, mapped_column
 from themis_backend.infra.schemas.base import BaseSchema
 
 
-class RefreshToken(BaseSchema):
+class RefreshTokenSchema(BaseSchema):
     __tablename__ = 'refresh_tokens'
 
     id: MappedColumn[uuid.UUID] = mapped_column(

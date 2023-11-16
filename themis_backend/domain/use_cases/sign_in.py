@@ -1,6 +1,6 @@
 from themis_backend.domain.repositories import UserRepository
 from themis_backend.domain.services import AccessTokenService, HashService
-from themis_backend.presentation.dtos import SignInDTO, UserViewDTO
+from themis_backend.presentation.dtos import SignInDTO
 from themis_backend.presentation.http.errors import (
     IncorrectPassword,
     UserNotFound,
@@ -29,6 +29,6 @@ class SignIn:
             raise UserNotFound()
 
         if self.__hash.compare(sign_in_dto.password, user.hashed_password):
-            return self.__token.create(UserViewDTO.from_user_dto(user))
+            return self.__token.create(user)
         else:
             raise IncorrectPassword()

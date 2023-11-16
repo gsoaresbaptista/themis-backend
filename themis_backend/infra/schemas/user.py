@@ -1,7 +1,7 @@
 import uuid
-
 from datetime import datetime
-from sqlalchemy import CHAR, VARCHAR, Uuid, DateTime, func
+
+from sqlalchemy import CHAR, VARCHAR, DateTime, Uuid, func
 from sqlalchemy.orm import MappedColumn, mapped_column
 
 from themis_backend.infra.schemas.base import BaseSchema

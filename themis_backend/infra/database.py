@@ -4,8 +4,8 @@ from themis_backend.config import DatabaseSettings
 from themis_backend.infra.schemas import (  # noqa: F401
     BaseSchema,
     MessageSchema,
+    RefreshTokenSchema,
     UserSchema,
-    RefreshToken,
 )
 
 
