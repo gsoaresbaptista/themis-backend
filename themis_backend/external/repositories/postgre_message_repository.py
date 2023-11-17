@@ -52,9 +52,8 @@ class PostgreMessageRepository(MessageRepository):
         async with Session() as session:
             if message_id != '' and message_id is not None:
                 query = select(MessageSchema).where(
-                    MessageSchema.id
-                    == message_id & MessageSchema.user_id
-                    == user_id
+                    (MessageSchema.id == message_id)
+                    & (MessageSchema.user_id == user_id)
                 )
             else:
                 query = (
