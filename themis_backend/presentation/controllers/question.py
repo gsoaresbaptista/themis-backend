@@ -14,8 +14,4 @@ class QuestionController(Controller):
         if question is None or question == '':
             raise EmptyQuestionNotAllowed()
 
-        return HttpResponse(
-            status_code=200,
-            body={'data': {'question': question}},
-            authorization=http_request.authorization,
-        )
+        return question, http_request.authorization

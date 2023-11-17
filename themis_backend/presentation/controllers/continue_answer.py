@@ -17,8 +17,4 @@ class ContinueAnswerController(Controller):
 
         message = await self.__use_case.execute(continue_dto)
 
-        return HttpResponse(
-            status_code=200,
-            body={'data': {'message': message}},
-            authorization=http_request.authorization,
-        )
+        return message, http_request.authorization

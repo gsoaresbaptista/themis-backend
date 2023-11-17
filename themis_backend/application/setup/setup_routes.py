@@ -14,15 +14,14 @@ from themis_backend.application.routes import (
 
 # TODO: add openapi and an interface
 def setup_routes(app: Starlette) -> None:
-    app.add_route('/users/sign-up', create_user_route, methods=['POST'])
-    app.add_route('/users/sign-in', sign_in_route, methods=['POST'])
-    app.add_route(
-        '/users/refresh-token', refresh_token_route, methods=['POST']
-    )
-    app.add_route('/messages/question', question_route, methods=['POST'])
-    app.add_route('/messages', get_messages, methods=['GET'])
-    app.add_route('/messages/clear-chat', clear_chat, methods=['DELETE'])
-    app.add_route('/messages/continue', continue_answer, methods=['POST'])
-    app.add_route(
-        '/messages/{message_id:str}', delete_message, methods=['DELETE']
-    )
+    for (route, handler, method) in [
+        ('/users/sign-up', create_user_route, 'POST'),
+        ('/users/sign-in', sign_in_route, 'POST'),
+        ('/users/refresh-token', refresh_token_route, 'POST'),
+        ('/messages/question', question_route, 'POST'),
+        ('/messages', get_messages, 'GET'),
+        ('/messages/clear-chat', clear_chat, 'DELETE'),
+        ('/messages/continue', continue_answer, 'POST'),
+        ('/messages/{message_id:str}', delete_message, 'DELETE'),
+    ]:
+        app.add_route(route, handler, methods=[method])

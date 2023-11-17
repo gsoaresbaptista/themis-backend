@@ -63,14 +63,12 @@ async def update_message_answer(
 
 
 async def question_route(request: Request) -> Response:
-    response = await request_adapter(
+    question, authorization = await request_adapter(
         request, QuestionController(), middlewares=[authenticate_composer()]
     )
-
-    question = response.body['data']['question']
     generator = await request.app.model.generate(question)
-
     lock = request.app.model_lock
+
     if lock:
         await lock.acquire()
 
@@ -78,29 +76,26 @@ async def question_route(request: Request) -> Response:
         store_message,
         answer=generator,
         question=question,
-        authorization=response.authorization,
+        authorization=authorization,
         lock=lock,
     )
 
     return StreamingResponse(
-        generator,
-        media_type='text/plain',
-        background=task,
+        generator, media_type='text/plain', background=task
     )
 
 
 async def continue_answer(request: Request) -> Response:
-    response = await request_adapter(
+    message, authorization = await request_adapter(
         request,
         continue_answer_compose(),
         middlewares=[authenticate_composer()],
     )
 
-    message = response.body['data']['message']
     previous_answer = message.answer[-ModelSettings.ANSWER_LENGTH :]
     generator = await request.app.model.generate(previous_answer)
-
     lock = request.app.model_lock
+
     if lock:
         await lock.acquire()
 
@@ -108,14 +103,12 @@ async def continue_answer(request: Request) -> Response:
         update_message_answer,
         message_id=message.id,
         answer=(previous_answer, generator),
-        authorization=response.authorization,
+        authorization=authorization,
         lock=lock,
     )
 
     return StreamingResponse(
-        generator,
-        media_type='text/plain',
-        background=task,
+        generator, media_type='text/plain', background=task
     )
 
 
@@ -123,10 +116,8 @@ async def get_messages(request: Request) -> Response:
     response = await request_adapter(
         request, get_messages_compose(), middlewares=[authenticate_composer()]
     )
-
     return JSONResponse(
-        status_code=response.status_code,
-        content=response.body,
+        status_code=response.status_code, content=response.body
     )
 
 
@@ -136,21 +127,15 @@ async def delete_message(request: Request) -> Response:
         delete_message_compose(),
         middlewares=[authenticate_composer()],
     )
-
     return JSONResponse(
-        status_code=response.status_code,
-        content=response.body,
+        status_code=response.status_code, content=response.body
     )
 
 
 async def clear_chat(request: Request) -> Response:
     response = await request_adapter(
-        request,
-        clear_chat_compose(),
-        middlewares=[authenticate_composer()],
+        request, clear_chat_compose(), middlewares=[authenticate_composer()]
     )
-
     return JSONResponse(
-        status_code=response.status_code,
-        content=response.body,
+        status_code=response.status_code, content=response.body
     )

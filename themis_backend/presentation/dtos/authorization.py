@@ -1,8 +1,9 @@
 from typing import NamedTuple
+from uuid import UUID
 
 
 class TokenDTO(NamedTuple):
-    user_id: str
+    user_id: UUID | str
     name: str
     email: str
 
