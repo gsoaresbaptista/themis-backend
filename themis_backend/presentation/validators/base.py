@@ -13,6 +13,10 @@ class BaseValidator:
         self.__query = self._query_validator
 
     def validate(self) -> None:
-        response = self.__query.validate(self.__dto._asdict())
+        response = self.__query.validate(
+            self.__dto
+            if isinstance(self.__dto, dict)
+            else self.__dto._asdict()
+        )
         if not response:
             raise HTTPUnprocessableEntity(errors=self.__query.errors)

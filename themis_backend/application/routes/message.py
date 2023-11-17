@@ -63,10 +63,11 @@ async def update_message_answer(
 
 
 async def question_route(request: Request) -> Response:
-    question, authorization = await request_adapter(
+    question, settings, authorization = await request_adapter(
         request, QuestionController(), middlewares=[authenticate_composer()]
     )
-    generator = await request.app.model.generate(question)
+
+    generator = await request.app.model.generate(question, settings)
     lock = request.app.model_lock
 
     if lock:

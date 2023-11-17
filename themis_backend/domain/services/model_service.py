@@ -1,4 +1,3 @@
-import asyncio
 from abc import ABC, abstractmethod
 from typing import Generator
 
@@ -32,10 +31,12 @@ class BufferedGenerator(Generator):
 class ModelService(ABC):
     @abstractmethod
     async def generate(
-        self, question: str, lock: asyncio.Lock = None
+        self, question: str, settings: dict[str, float]
     ) -> BufferedGenerator:
         ...
 
     @abstractmethod
-    async def tokenize(self, question: str) -> list[str]:
+    async def tokenize(
+        self, question: str, settings: dict[str, float]
+    ) -> list[str]:
         ...

@@ -14,10 +14,16 @@ class GGUFModelService(ModelService):
         )
         self.__token_to_str = self.__model.ctransformers_llm_detokenize
 
-    async def generate(self, question: str) -> BufferedGenerator:
-        return BufferedGenerator(self.__model(question, stream=True))
+    async def generate(
+        self, question: str, settings: dict[str, float]
+    ) -> BufferedGenerator:
+        return BufferedGenerator(
+            self.__model(question, stream=True, **settings)
+        )
 
-    async def tokenize(self, question: str) -> list[str]:
+    async def tokenize(
+        self, question: str, settings: dict[str, float]
+    ) -> list[str]:
         tokens = []
         for token in self.__model.tokenize(question):
             tokens.append((await self.__token_to_str(token)).decode('utf-8'))
