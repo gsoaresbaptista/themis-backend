@@ -11,12 +11,12 @@ class RandomModelService(ModelService):
         self.__model = random_generator
 
     async def generate(
-        self, question: str, settings: dict[str, float]
+        self, question: str, settings: dict[str, float] = dict()
     ) -> BufferedGenerator:
         return BufferedGenerator(self.__model())
 
     async def tokenize(
-        self, question: str, settings: dict[str, float]
+        self, question: str, settings: dict[str, float] = dict()
     ) -> list[str]:
         return question.split(' ')
 

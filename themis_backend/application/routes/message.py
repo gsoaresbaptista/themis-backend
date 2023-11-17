@@ -93,7 +93,7 @@ async def continue_answer(request: Request) -> Response:
         middlewares=[authenticate_composer()],
     )
 
-    previous_answer = message.answer[-ModelSettings.ANSWER_LENGTH :]
+    previous_answer = message.answer[-ModelSettings.MAX_NEW_TOKENS :]
     generator = await request.app.model.generate(previous_answer)
     lock = request.app.model_lock
 

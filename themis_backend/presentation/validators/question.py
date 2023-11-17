@@ -18,8 +18,19 @@ class QuestionValidator(BaseValidator):
                 'schema': {
                     'temperature': {
                         'type': 'float',
+                        'min': 0,
+                        'max': 1,
                         'required': False,
-                    }
+                    },
+                    'last_n_tokens': {
+                        'type': 'integer',
+                        'min': 1,
+                        'required': False,
+                    },
+                    'repetition_penalty': {
+                        'type': 'float',
+                        'required': False,
+                    },
                 },
             },
         }

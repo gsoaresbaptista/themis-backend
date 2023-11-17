@@ -31,12 +31,12 @@ class BufferedGenerator(Generator):
 class ModelService(ABC):
     @abstractmethod
     async def generate(
-        self, question: str, settings: dict[str, float]
+        self, question: str, settings: dict[str, float] = dict()
     ) -> BufferedGenerator:
         ...
 
     @abstractmethod
     async def tokenize(
-        self, question: str, settings: dict[str, float]
+        self, question: str, settings: dict[str, float] = dict()
     ) -> list[str]:
         ...
