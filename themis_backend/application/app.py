@@ -1,6 +1,7 @@
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+
 from themis_backend.application.setup import (
     setup_exceptions,
     setup_routes,

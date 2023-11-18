@@ -22,6 +22,7 @@ class SignInController(Controller):
                 'data': {
                     'access_token': authorization_header.access_token,
                     'refresh_token': authorization_header.refresh_token,
+                    'user': authorization_header.user,
                 }
             },
         )
