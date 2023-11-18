@@ -11,5 +11,5 @@ class AuthenticateUser:
     async def execute(self, bearer_token: str) -> Optional[UserDTO]:
         if bearer_token is None:
             return None
-        _, token = bearer_token.split(' ', 1)
+        token = bearer_token[7:]
         return await self.__token.decode(token)
