@@ -19,6 +19,7 @@ from themis_backend.external.repositories.postgre_message_repository import (
     PostgreMessageRepository,
 )
 from themis_backend.presentation.controllers import QuestionController
+from themis_backend.presentation.http.errors import HTTPNotFound
 from themis_backend.presentation.dtos import (
     CreateMessageDTO,
     TokenDTO,
@@ -92,6 +93,9 @@ async def continue_answer(request: Request) -> Response:
         continue_answer_compose(),
         middlewares=[authenticate_composer()],
     )
+
+    if message is None:
+        raise HTTPNotFound("The user has no messages to continue")
 
     previous_answer = message.answer[-ModelSettings.MAX_NEW_TOKENS :]
     generator = await request.app.model.generate(previous_answer)
