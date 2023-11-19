@@ -68,6 +68,7 @@ class RefreshToken:
                     return AuthorizationHeaderDTO(
                         access_token=access_token,
                         refresh_token=refresh_token.to_dict(),
+                        user=user.to_dict(),
                     )
 
         raise HTTPUnauthorized()
