@@ -1,3 +1,5 @@
+import json
+
 from starlette.requests import Request
 
 from themis_backend.presentation.controllers import Controller
@@ -16,6 +18,9 @@ async def request_adapter(
             body = await request.json()
         except:  # noqa: E722
             pass
+
+    if isinstance(body, str):
+        body = json.loads(body)
 
     body.update(request.path_params)
     body.update(request.query_params)
