@@ -10,7 +10,7 @@ from themis_backend.presentation.dtos import (
     AuthorizationHeaderDTO,
     RefreshTokenDTO,
 )
-from themis_backend.presentation.http.errors import HTTPUnauthorized
+from themis_backend.presentation.http.errors import HTTPForbidden
 from themis_backend.presentation.validators import RefreshTokenValidator
 
 
@@ -36,7 +36,7 @@ class RefreshToken:
                 refresh_token.refresh_token
             )
         except:   # noqa: E722
-            raise HTTPUnauthorized()
+            raise HTTPForbidden()
 
         if refresh_token is not None:
             expires_in = refresh_token.expires_in
@@ -71,4 +71,4 @@ class RefreshToken:
                         user=user.to_dict(),
                     )
 
-        raise HTTPUnauthorized()
+        raise HTTPForbidden()
