@@ -17,5 +17,5 @@ class Message(NamedTuple):
             else self.user_id,
             'question': self.question,
             'answer': self.answer,
-            'created_at': self.created_at.strftime('%Y-%m-%d, %H:%M:%S'),
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S.%f'),
         }
