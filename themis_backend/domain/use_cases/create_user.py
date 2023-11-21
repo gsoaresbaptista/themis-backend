@@ -19,7 +19,7 @@ class CreateUser:
         validator.validate()
 
         user = await self.__repository.create(
-            name=user_dto.name,
+            name=user_dto.name.title(),
             email=user_dto.email,
             hashed_password=self.__hash.hash(user_dto.password),
         )
