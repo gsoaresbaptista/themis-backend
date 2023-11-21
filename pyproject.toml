@@ -19,7 +19,7 @@ ctransformers = "^0.2.27"
 
 [tool.taskipy.tasks]
 format = 'blue .  && isort .'
-run = "uvicorn themis_backend.application.app:app --reload"
+run = "uvicorn themis_backend.application.app:app --reload --host=0.0.0.0"
 lint = 'ruff . && blue --check . --diff'
 
 [tool.ruff]
