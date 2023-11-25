@@ -4,6 +4,7 @@ from .continue_answer import ContinueAnswerController
 from .controller import Controller
 from .create_user import CreateUserController
 from .delete_message import DeleteMessageController
+from .get_last_message import GetLastMessageController
 from .get_messages import GetMessagesController
 from .question import QuestionController
 from .refresh_token import RefreshTokenController
@@ -20,4 +21,5 @@ __all__ = [
     'DeleteMessageController',
     'ClearChatController',
     'ContinueAnswerController',
+    'GetLastMessageController',
 ]

@@ -10,6 +10,7 @@ from themis_backend.application.factories import (
     clear_chat_compose,
     continue_answer_compose,
     delete_message_compose,
+    get_last_messages_compose,
     get_messages_compose,
 )
 from themis_backend.config import ModelSettings
@@ -120,6 +121,17 @@ async def continue_answer(request: Request) -> Response:
 async def get_messages(request: Request) -> Response:
     response = await request_adapter(
         request, get_messages_compose(), middlewares=[authenticate_composer()]
+    )
+    return JSONResponse(
+        status_code=response.status_code, content=response.body
+    )
+
+
+async def get_last_message(request: Request) -> Response:
+    response = await request_adapter(
+        request,
+        get_last_messages_compose(),
+        middlewares=[authenticate_composer()],
     )
     return JSONResponse(
         status_code=response.status_code, content=response.body

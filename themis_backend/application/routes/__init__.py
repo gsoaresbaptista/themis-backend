@@ -2,6 +2,7 @@ from .message import (
     clear_chat,
     continue_answer,
     delete_message,
+    get_last_message,
     get_messages,
     question_route,
 )
@@ -16,4 +17,5 @@ __all__ = [
     'delete_message',
     'clear_chat',
     'continue_answer',
+    'get_last_message',
 ]

@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, desc, select, update
 
 from themis_backend.domain.entities import Message
 from themis_backend.domain.repositories import MessageRepository
@@ -45,6 +45,18 @@ class PostgreMessageRepository(MessageRepository):
             messages = messages.scalars()
 
         return [user_row_to_entity(message).to_dict() for message in messages]
+
+    async def get_last_message(self, user_id: UUID | str) -> list[Message]:
+        async with Session() as session:
+            query = (
+                select(MessageSchema)
+                .where(MessageSchema.user_id == user_id)
+                .order_by(desc(MessageSchema.created_at))
+            )
+            message = await session.execute(query)
+            message = message.scalar()
+
+        return user_row_to_entity(message).to_dict()
 
     async def search_by_id(
         self, message_id: UUID | str, user_id: UUID | str

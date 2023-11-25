@@ -17,6 +17,10 @@ class MessageRepository(ABC):
         ...
 
     @abstractmethod
+    async def get_last_message(self, user_id: UUID | str) -> list[Message]:
+        ...
+
+    @abstractmethod
     async def search_by_id(self, message_id: UUID | str) -> Optional[Message]:
         ...
 

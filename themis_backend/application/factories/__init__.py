@@ -2,6 +2,7 @@ from .authenticate import authenticate_composer
 from .clear_chat import clear_chat_compose
 from .continue_answer import continue_answer_compose
 from .delete_message import delete_message_compose
+from .get_last_message import get_last_messages_compose
 from .get_messages_compose import get_messages_compose
 from .refresh_token import refresh_token_composer
 from .sign_in import sign_in_composer
@@ -16,4 +17,5 @@ __all__ = [
     'delete_message_compose',
     'clear_chat_compose',
     'continue_answer_compose',
+    'get_last_messages_compose',
 ]
