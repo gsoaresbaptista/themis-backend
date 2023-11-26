@@ -56,7 +56,11 @@ class PostgreMessageRepository(MessageRepository):
             message = await session.execute(query)
             message = message.scalar()
 
-        return user_row_to_entity(message).to_dict()
+        return (
+            user_row_to_entity(message).to_dict()
+            if message is not None
+            else None
+        )
 
     async def search_by_id(
         self, message_id: UUID | str, user_id: UUID | str
