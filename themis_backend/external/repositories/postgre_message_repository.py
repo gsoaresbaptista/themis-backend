@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import delete, desc, select, update
+from sqlalchemy import delete, desc, select, update, func
 
 from themis_backend.domain.entities import Message
 from themis_backend.domain.repositories import MessageRepository
@@ -127,7 +127,7 @@ class PostgreMessageRepository(MessageRepository):
                     (MessageSchema.user_id == user_id)
                     & (MessageSchema.id == message_id)
                 )
-                .values(answer=answer)
+                .values(answer=answer, created_at=func.now())
             )
             await session.execute(query)
             await session.commit()

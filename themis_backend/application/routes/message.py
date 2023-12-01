@@ -84,7 +84,7 @@ async def question_route(request: Request) -> Response:
     )
 
     return StreamingResponse(
-        generator, media_type='text/plain', background=task
+        generator, media_type="text/plain", background=task
     )
 
 
@@ -96,10 +96,12 @@ async def continue_answer(request: Request) -> Response:
     )
 
     if message is None:
-        raise HTTPNotFound('The user has no messages to continue')
+        raise HTTPNotFound("The user has no messages to continue")
 
-    previous_answer = message.answer[-ModelSettings.MAX_NEW_TOKENS :]
-    generator = await request.app.model.generate(previous_answer)
+    previous_answer = message.answer
+    generator = await request.app.model.generate(
+        previous_answer[-ModelSettings.MAX_NEW_TOKENS :]
+    )
     lock = request.app.model_lock
 
     if lock:
@@ -114,7 +116,7 @@ async def continue_answer(request: Request) -> Response:
     )
 
     return StreamingResponse(
-        generator, media_type='text/plain', background=task
+        generator, media_type="text/plain", background=task
     )
 
 

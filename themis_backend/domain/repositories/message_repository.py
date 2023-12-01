@@ -21,7 +21,7 @@ class MessageRepository(ABC):
         ...
 
     @abstractmethod
-    async def search_by_id(self, message_id: UUID | str) -> Optional[Message]:
+    async def search_by_id(self, message_id: UUID | str, user_id: UUID | str) -> Optional[Message]:
         ...
 
     @abstractmethod
