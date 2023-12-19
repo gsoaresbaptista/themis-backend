@@ -10,7 +10,7 @@ class QuestionValidator(BaseValidator):
             'question': {
                 'type': 'string',
                 'empty': False,
-                'maxlength': ModelSettings.MAX_NEW_TOKENS,
+                'maxlength': int(ModelSettings.CONTEXT_LENGTH/2),
                 'required': True,
             },
             'settings': {

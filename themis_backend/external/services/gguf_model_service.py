@@ -9,12 +9,15 @@ class GGUFModelService(ModelService):
         self.__model = AutoModelForCausalLM.from_pretrained(
             ModelSettings.FOLDER_PATH,
             model_file=ModelSettings.FILE_PATH,
-            model_type=ModelSettings.TYPE,
             gpu_layers=ModelSettings.GPU_LAYERS,
+            add_eos_token=True,
             config=AutoConfig(
                 Config(
                     context_length=ModelSettings.CONTEXT_LENGTH,
                     gpu_layers=ModelSettings.GPU_LAYERS,
+                    temperature=0.8,
+                    top_p=0.6,
+                    repetition_penalty=1.2,
                 ),
             ),
         )
