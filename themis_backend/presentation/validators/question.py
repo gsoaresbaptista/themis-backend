@@ -1,6 +1,7 @@
 from cerberus import Validator
 
 from .base import BaseValidator
+from themis_backend.config import ModelSettings
 
 
 class QuestionValidator(BaseValidator):
@@ -9,7 +10,7 @@ class QuestionValidator(BaseValidator):
             'question': {
                 'type': 'string',
                 'empty': False,
-                'maxlength': 512,
+                'maxlength': ModelSettings.MAX_NEW_TOKENS,
                 'required': True,
             },
             'settings': {
